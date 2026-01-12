@@ -4,20 +4,20 @@ import { useAuth } from '../context/AuthContext';
 import { useBlog } from '../context/BlogContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { 
-  PenTool, 
-  Trash2, 
+  PencilSimple, 
+  Trash, 
   Eye, 
   Plus, 
-  Search, 
+  MagnifyingGlass, 
   Clock,
   FileText,
-  Edit3,
-  Share2,
-  TrendingUp,
-  LayoutGrid,
+  PencilLine,
+  ShareNetwork,
+  TrendUp,
+  SquaresFour,
   List,
-  MoreHorizontal
-} from 'lucide-react';
+  DotsThree
+} from '@phosphor-icons/react';
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
@@ -109,7 +109,7 @@ const Dashboard = () => {
             </div>
             <div className="mt-6">
                <Link to="/create" className="btn-primary inline-flex items-center gap-2">
-                  <Plus className="w-4 h-4" />
+                  <Plus weight="bold" size={16} />
                   New Story
                </Link>
             </div>
@@ -119,7 +119,7 @@ const Dashboard = () => {
         <div className="p-6 rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col justify-between hover:border-zinc-700 transition-colors">
           <div className="flex items-center justify-between mb-4">
             <span className="text-zinc-500 text-sm font-medium">Total Stories</span>
-            <FileText className="w-4 h-4 text-zinc-500" />
+            <FileText weight="regular" size={16} />
           </div>
           <p className="text-3xl font-mono font-bold text-white">{blogs.length}</p>
         </div>
@@ -128,7 +128,7 @@ const Dashboard = () => {
         <div className="p-6 rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col justify-between hover:border-zinc-700 transition-colors">
           <div className="flex items-center justify-between mb-4">
             <span className="text-zinc-500 text-sm font-medium">This Month</span>
-            <TrendingUp className="w-4 h-4 text-zinc-500" />
+            <TrendUp weight="regular" size={16} />
           </div>
            <p className="text-3xl font-mono font-bold text-white">
               {blogs.filter(blog => {
@@ -169,13 +169,13 @@ const Dashboard = () => {
               onClick={() => setViewMode('list')}
               className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-zinc-800 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
             >
-              <List className="w-4 h-4" />
+              <List weight="bold" size={16} />
             </button>
             <button
               onClick={() => setViewMode('grid')}
               className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-zinc-800 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
             >
-              <LayoutGrid className="w-4 h-4" />
+              <SquaresFour weight="bold" size={16} />
             </button>
           </div>
         </div>
@@ -209,9 +209,9 @@ const Dashboard = () => {
                         {getReadTime(blog.content)} min
                      </div>
                      <div className="col-span-2 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Link to={`/blog/${blog._id}`} className="p-1.5 text-zinc-400 hover:text-white transition-colors" title="View"><Eye className="w-4 h-4"/></Link>
-                        <Link to={`/blog/${blog._id}/edit`} className="p-1.5 text-zinc-400 hover:text-white transition-colors" title="Edit"><Edit3 className="w-4 h-4"/></Link>
-                        <button onClick={() => setDeleteConfirm(blog._id)} className="p-1.5 text-zinc-400 hover:text-red-400 transition-colors" title="Delete"><Trash2 className="w-4 h-4"/></button>
+                        <Link to={`/blog/${blog._id}`} className="p-1.5 text-zinc-400 hover:text-white transition-colors" title="View"><Eye weight="regular" size={16}/></Link>
+                        <Link to={`/blog/${blog._id}/edit`} className="p-1.5 text-zinc-400 hover:text-white transition-colors" title="Edit"><PencilLine weight="regular" size={16}/></Link>
+                        <button onClick={() => setDeleteConfirm(blog._id)} className="p-1.5 text-zinc-400 hover:text-red-400 transition-colors" title="Delete"><Trash weight="regular" size={16}/></button>
                      </div>
                   </div>
                ))}
@@ -239,11 +239,11 @@ const Dashboard = () => {
                 
                 <div className="pt-4 border-t border-zinc-800/50 flex items-center justify-between mt-auto">
                     <span className="text-xs text-zinc-500 flex items-center gap-1">
-                       <Clock className="w-3 h-3" /> {getReadTime(blog.content)} min
+                       <Clock weight="regular" size={12} /> {getReadTime(blog.content)} min
                     </span>
                     <div className="flex gap-1">
-                        <Link to={`/blog/${blog._id}/edit`} className="p-2 text-zinc-500 hover:text-white transition-colors"><Edit3 className="w-4 h-4"/></Link>
-                        <button onClick={() => setDeleteConfirm(blog._id)} className="p-2 text-zinc-500 hover:text-red-400 transition-colors"><Trash2 className="w-4 h-4"/></button>
+                        <Link to={`/blog/${blog._id}/edit`} className="p-2 text-zinc-500 hover:text-white transition-colors"><PencilLine weight="regular" size={16}/></Link>
+                        <button onClick={() => setDeleteConfirm(blog._id)} className="p-2 text-zinc-500 hover:text-red-400 transition-colors"><Trash weight="regular" size={16}/></button>
                     </div>
                 </div>
             </div>
@@ -254,7 +254,7 @@ const Dashboard = () => {
        {filteredAndSortedBlogs.length === 0 && (
          <div className="py-20 text-center border-2 border-dashed border-zinc-800 rounded-xl">
            <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-4">
-             <Search className="w-5 h-5 text-zinc-500" />
+             <MagnifyingGlass weight="regular" size={20} />
            </div>
            <h3 className="text-lg font-medium text-white mb-1">No stories found</h3>
            <p className="text-zinc-500 text-sm">Create a new story to get started.</p>

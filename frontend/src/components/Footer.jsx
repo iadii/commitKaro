@@ -6,7 +6,6 @@ const Footer = () => (
         
         {/* Minimal Logo */}
         <div className="flex items-center gap-3 opacity-50 hover:opacity-100 transition-opacity">
-           <img src="/nano_writing_logo_1768216125397.png" alt="Nano" className="h-8 invert" />
            <span className="text-zinc-500 font-serif italic">write with intention.</span>
         </div>
 
@@ -20,7 +19,7 @@ const Footer = () => (
 
       </div>
       <div className="mt-12 text-center">
-         <p className="text-[10px] text-zinc-800 uppercase tracking-widest">© 2024 Nano Inc. All rights reversed.</p>
+         <p className="text-[10px] text-zinc-800 uppercase tracking-widest">© {new Date().getFullYear()} Nano Inc. All rights reversed.</p>
       </div>
     </footer>
 );
