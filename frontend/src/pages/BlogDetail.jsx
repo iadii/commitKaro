@@ -198,7 +198,7 @@ const BlogDetail = () => {
         </div>
 
         {/* Blog Article Container */}
-        <article className="bg-zinc-900/30 backdrop-blur-xl border border-white/5 rounded-2xl p-8 md:p-12 shadow-2xl shadow-black/20">
+        <article className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 md:p-12 shadow-2xl shadow-black/50">
           <header className="mb-12 text-center">
              <div className="inline-flex items-center gap-3 text-xs md:text-sm text-zinc-400 mb-6 font-mono tracking-wide uppercase">
                  <span>{formatDate(blog.createdAt)}</span>

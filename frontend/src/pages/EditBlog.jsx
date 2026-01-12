@@ -75,9 +75,9 @@ const EditBlog = () => {
         <div className="flex-1 flex flex-col md:flex-row gap-6 overflow-hidden">
           
           {/* Editor Section */}
-          <div className="flex-1 flex flex-col bg-zinc-900/30 backdrop-blur-xl border border-white/5 rounded-2xl overflow-hidden shadow-2xl shadow-black/20">
+          <div className="flex-1 flex flex-col bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
             {/* Toolbar */}
-            <div className="h-16 border-b border-white/5 flex items-center justify-between px-6 bg-white/5">
+            <div className="h-16 border-b border-zinc-800 flex items-center justify-between px-6 bg-zinc-900">
                <button
                  onClick={() => navigate('/dashboard')}
                  className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
@@ -122,8 +122,8 @@ const EditBlog = () => {
           </div>
 
           {/* Preview Section - Hidden on mobile */}
-          <div className="hidden lg:flex w-1/2 flex-col bg-black/20 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden">
-              <div className="h-16 border-b border-white/5 flex items-center px-6 bg-white/5">
+          <div className="hidden lg:flex w-1/2 flex-col bg-zinc-900/50 backdrop-blur-sm border border-zinc-800 rounded-2xl overflow-hidden">
+              <div className="h-16 border-b border-zinc-800 flex items-center px-6 bg-zinc-900/50">
                  <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
                    <Eye weight="bold" className="w-4 h-4" /> Live Preview
                  </span>

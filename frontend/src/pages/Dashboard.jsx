@@ -88,7 +88,7 @@ const Dashboard = () => {
           {/* Header & Stats (Glass Bento Grid) */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Welcome / Main Action */}
-            <div className="md:col-span-2 lg:col-span-2 p-8 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 flex flex-col justify-between shadow-2xl shadow-black/20 group hover:bg-white/10 transition-colors">
+            <div className="md:col-span-2 lg:col-span-2 p-8 rounded-2xl bg-zinc-900 border border-zinc-800 flex flex-col justify-between shadow-2xl shadow-black/50 group hover:bg-zinc-900/80 transition-colors">
                 <div>
                    <h1 className="text-3xl font-display font-medium text-white mb-2">Explore</h1>
                    <p className="text-zinc-400 font-light">Manage your sanctuary of stories.</p>
@@ -102,7 +102,7 @@ const Dashboard = () => {
             </div>
 
             {/* Stat 1 */}
-            <div className="p-6 rounded-2xl bg-zinc-900/50 backdrop-blur-md border border-white/5 flex flex-col justify-between hover:border-white/20 transition-all">
+            <div className="p-6 rounded-2xl bg-zinc-900 border border-zinc-800 flex flex-col justify-between hover:border-zinc-700 transition-all">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-zinc-500 text-xs uppercase tracking-widest font-medium">Total Stories</span>
                 <FileText weight="duotone" size={20} className="text-zinc-400" />
@@ -111,7 +111,7 @@ const Dashboard = () => {
             </div>
 
             {/* Stat 2 */}
-            <div className="p-6 rounded-2xl bg-zinc-900/50 backdrop-blur-md border border-white/5 flex flex-col justify-between hover:border-white/20 transition-all">
+            <div className="p-6 rounded-2xl bg-zinc-900 border border-zinc-800 flex flex-col justify-between hover:border-zinc-700 transition-all">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-zinc-500 text-xs uppercase tracking-widest font-medium">This Month</span>
                 <TrendUp weight="duotone" size={20} className="text-zinc-400" />
@@ -126,8 +126,8 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Glass Toolbar */}
-          <div className="flex flex-col md:flex-row gap-4 justify-between items-center py-4 px-6 rounded-xl bg-white/5 backdrop-blur-md border border-white/5">
+          {/* Toolbar */}
+          <div className="flex flex-col md:flex-row gap-4 justify-between items-center py-4 px-6 rounded-xl bg-zinc-900 border border-zinc-800">
             <div className="relative w-full md:w-96">
               <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
               <input
@@ -135,7 +135,7 @@ const Dashboard = () => {
                 placeholder="Search stories..."
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
-                className="w-full bg-black/20 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-white/20 focus:bg-black/40 transition-all"
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg pl-10 pr-4 py-2 text-sm text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-700 focus:bg-zinc-950 transition-all"
               />
             </div>
             
@@ -143,23 +143,23 @@ const Dashboard = () => {
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value)}
-                className="bg-black/20 border border-white/10 text-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-white/20 hover:bg-black/40 transition-all cursor-pointer"
+                className="bg-zinc-950 border border-zinc-800 text-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-zinc-700 hover:bg-zinc-900 transition-all cursor-pointer"
               >
                 <option value="newest" className="bg-zinc-900">Newest First</option>
                 <option value="oldest" className="bg-zinc-900">Oldest First</option>
                 <option value="title" className="bg-zinc-900">Alphabetical</option>
               </select>
               
-              <div className="flex bg-black/20 rounded-lg p-1 border border-white/10">
+              <div className="flex bg-zinc-950 rounded-lg p-1 border border-zinc-800">
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                  className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-zinc-800 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
                 >
                   <List weight="bold" size={16} />
                 </button>
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                  className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-zinc-800 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
                 >
                   <SquaresFour weight="bold" size={16} />
                 </button>
@@ -167,19 +167,19 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Content Area - Glass Cards */}
+          {/* Content Area - Solid Cards */}
           {viewMode === 'list' ? (
-             <div className="bg-zinc-900/30 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden">
-                <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 border-b border-white/5 text-xs font-medium text-zinc-500 uppercase tracking-wider">
+             <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl">
+                <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 border-b border-zinc-800 text-xs font-medium text-zinc-500 uppercase tracking-wider bg-zinc-950/50">
                    <div className="col-span-6">Title</div>
                    <div className="col-span-2">Date</div>
                    <div className="col-span-2">Read Time</div>
                    <div className="col-span-2 text-right">Actions</div>
                 </div>
                 
-                <div className="divide-y divide-white/5">
+                <div className="divide-y divide-zinc-800">
                    {filteredAndSortedBlogs.map((blog) => (
-                      <div key={blog._id} className="group grid grid-cols-1 md:grid-cols-12 gap-4 px-6 py-5 hover:bg-white/5 transition-colors items-center">
+                      <div key={blog._id} className="group grid grid-cols-1 md:grid-cols-12 gap-4 px-6 py-5 hover:bg-zinc-800/50 transition-colors items-center">
                          <div className="col-span-6">
                             <h3 className="text-lg font-display text-zinc-200 group-hover:text-white transition-colors truncate">
                                {blog.title}
@@ -194,9 +194,9 @@ const Dashboard = () => {
                             {getReadTime(blog.content)} min
                          </div>
                          <div className="col-span-2 flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Link to={`/blog/${blog._id}`} className="p-2 text-zinc-400 hover:text-white hover:bg-white/10 rounded-lg transition-all" title="View"><Eye weight="regular" size={18}/></Link>
-                            <Link to={`/blog/${blog._id}/edit`} className="p-2 text-zinc-400 hover:text-white hover:bg-white/10 rounded-lg transition-all" title="Edit"><PencilLine weight="regular" size={18}/></Link>
-                            <button onClick={() => setDeleteConfirm(blog._id)} className="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all" title="Delete"><Trash weight="regular" size={18}/></button>
+                            <Link to={`/blog/${blog._id}`} className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-700 rounded-lg transition-all" title="View"><Eye weight="regular" size={18}/></Link>
+                            <Link to={`/blog/${blog._id}/edit`} className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-700 rounded-lg transition-all" title="Edit"><PencilLine weight="regular" size={18}/></Link>
+                            <button onClick={() => setDeleteConfirm(blog._id)} className="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-900/20 rounded-lg transition-all" title="Delete"><Trash weight="regular" size={18}/></button>
                          </div>
                       </div>
                    ))}
@@ -207,7 +207,7 @@ const Dashboard = () => {
               {filteredAndSortedBlogs.map((blog) => (
                 <div 
                   key={blog._id} 
-                  className="group flex flex-col p-6 rounded-2xl bg-zinc-900/40 backdrop-blur-md border border-white/5 hover:border-white/10 hover:bg-zinc-900/60 transition-all duration-300"
+                  className="group flex flex-col p-6 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                     <div className="flex-1">
                        <div className="flex justify-between items-start mb-4">
@@ -221,13 +221,13 @@ const Dashboard = () => {
                        </p>
                     </div>
                     
-                    <div className="pt-4 border-t border-white/5 flex items-center justify-between mt-auto">
+                    <div className="pt-4 border-t border-zinc-800 flex items-center justify-between mt-auto">
                         <span className="text-xs text-zinc-500 flex items-center gap-2">
                            <Clock weight="regular" size={14} /> {getReadTime(blog.content)} min
                         </span>
                         <div className="flex gap-1 justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Link to={`/blog/${blog._id}/edit`} className="p-2 text-zinc-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"><PencilLine weight="regular" size={16}/></Link>
-                            <button onClick={() => setDeleteConfirm(blog._id)} className="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"><Trash weight="regular" size={16}/></button>
+                            <Link to={`/blog/${blog._id}/edit`} className="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all"><PencilLine weight="regular" size={16}/></Link>
+                            <button onClick={() => setDeleteConfirm(blog._id)} className="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-900/20 rounded-lg transition-all"><Trash weight="regular" size={16}/></button>
                         </div>
                     </div>
                 </div>
@@ -236,8 +236,8 @@ const Dashboard = () => {
           )}
 
            {filteredAndSortedBlogs.length === 0 && (
-             <div className="py-24 text-center border border-dashed border-white/10 rounded-2xl bg-white/5 backdrop-blur-sm">
-               <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+             <div className="py-24 text-center border border-dashed border-zinc-800 rounded-2xl bg-zinc-900">
+               <div className="w-16 h-16 bg-zinc-950 rounded-full flex items-center justify-center mx-auto mb-6">
                  <MagnifyingGlass weight="light" size={28} className="text-zinc-400" />
                </div>
                <h3 className="text-lg font-display text-white mb-2">No stories found</h3>
