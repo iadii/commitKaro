@@ -17,9 +17,10 @@ function App() {
   return (
     <AuthProvider>
       <BlogProvider>
-        <div className="min-h-screen">
+        <div className="min-h-screen relative font-sans antialiased text-zinc-100 selection:bg-white selection:text-black">
+          <div className="grid-bg" />
           <Navbar />
-          <main className="pt-16">
+          <main className="pt-24 pb-12 px-4 w-full max-w-7xl mx-auto">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
@@ -65,9 +66,18 @@ function App() {
             toastOptions={{
               duration: 4000,
               style: {
-                background: '#1e293b',
+                background: 'rgba(30, 30, 40, 0.8)',
+                backdropFilter: 'blur(10px)',
                 color: '#fff',
-                border: '1px solid #334155',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '12px',
+                padding: '16px',
+              },
+              success: {
+                iconTheme: {
+                  primary: '#4ade80',
+                  secondary: 'black',
+                },
               },
             }}
           />

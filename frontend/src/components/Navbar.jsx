@@ -1,221 +1,133 @@
-import { useState, useRef, useEffect } from 'react';
-
+import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { PenTool, User, LogOut, Menu, X, Feather, UserCircle, LayoutDashboard } from 'lucide-react';
+import { 
+  Search,
+  User,
+  PenTool,
+  LogOut,
+  Menu,
+  X
+} from 'lucide-react';
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-    }
-    if (dropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [dropdownOpen]);
 
   const handleLogout = () => {
     logout();
     navigate('/');
-    setDropdownOpen(false);
-    setIsMobileMenuOpen(false);
   };
 
   const isActive = (path) => location.pathname === path;
 
-  const navLinks = [
-    ...(isAuthenticated ? [
-      { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-      { path: '/create', label: 'Create', icon: PenTool },
-    ] : []),
-  ];
-
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/5 backdrop-blur-xl border-b border-white/10 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link 
-            to="/" 
-            className="flex items-center gap-3 text-2xl font-bold text-white hover:opacity-80 transition-all duration-300 group"
-          >
-            <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
-              <Feather className="w-7 h-7 text-white" />
-            </div>
-            <span className="font-serenade bg-gradient-to-r from-white to-teal-200 bg-clip-text text-transparent font-bold tracking-tight">commitKaro()</span>
-          </Link>
-
-         
-
-          {/* Desktop Right Side */}
-          <div className="hidden md:flex items-center gap-4">
-            {isAuthenticated ? (
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  className="w-12 h-12 rounded-full border-2 border-white/20 focus:outline-none focus:ring-2 focus:ring-teal-400/50 overflow-hidden shadow-lg bg-gradient-to-br from-teal-600/20 to-emerald-600/20 backdrop-blur-sm flex items-center justify-center"
-                  onClick={() => setDropdownOpen((open) => !open)}
-                  aria-label="User menu"
-                >
-                  <img
-                    src={user?.picture || '/default-avatar.png'}
-                    alt={user?.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                    referrerPolicy="no-referrer"
-                  />
-                </button>
-                {/* Dropdown */}
-                {dropdownOpen && (
-                  <div className="absolute right-0 mt-3 w-64 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl py-2 z-50">
-                    <Link
-                      to="/profile"
-                      className="flex items-center gap-3 px-6 py-3 text-white hover:bg-white/10 transition-all duration-200 mx-2 rounded-xl"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      <UserCircle className="w-5 h-5 text-teal-400" />
-                      <span>Profile</span>
-                    </Link>
-                    <Link
-                      to="/create"
-                      className="flex items-center gap-3 px-6 py-3 text-white hover:bg-white/10 transition-all duration-200 mx-2 rounded-xl"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      <PenTool className="w-5 h-5 text-teal-400" />
-                      <span>Create</span>
-                    </Link>
-                    <Link
-                      to="/dashboard"
-                      className="flex items-center gap-3 px-6 py-3 text-white hover:bg-white/10 transition-all duration-200 mx-2 rounded-xl"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      <LayoutDashboard className="w-5 h-5 text-teal-400" />
-                      <span>Dashboard</span>
-                    </Link>
-                    <div className="border-t border-white/10 my-2"></div>
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center gap-3 px-6 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 w-full transition-all duration-200 mx-2 rounded-xl"
-                    >
-                      <LogOut className="w-5 h-5" />
-                      <span>Logout</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link
-                to="/login"
-                className="px-8 py-3 rounded-full bg-gradient-to-r from-teal-500 to-emerald-600 text-white font-semibold shadow-lg hover:shadow-teal-500/25 transition-all duration-300"
-              >
-                Login
-              </Link>
-            )}
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-950 border-b border-white/5 px-6 py-4 transition-all duration-300">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-12 items-center">
+          
+          {/* LEFT: Primary Navigation */}
+          <div className="col-span-4 flex items-center gap-8 hidden md:flex">
+             <Link 
+               to="/" 
+               className={`text-xs font-medium tracking-widest uppercase transition-colors ${isActive('/') ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+             >
+               Home
+             </Link>
+             <Link 
+               to="/dashboard" 
+               className={`text-xs font-medium tracking-widest uppercase transition-colors ${isActive('/dashboard') ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+             >
+               Explore
+             </Link>
+             <Link 
+               to="/about" 
+               className={`text-xs font-medium tracking-widest uppercase transition-colors ${location.pathname === '/about' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+             >
+               Manifesto
+             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-3 rounded-xl text-white hover:bg-white/10 transition-all duration-300"
-          >
-            {isMobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
-          </button>
-        </div>
-      </div>
+          {/* CENTER: Logo */}
+          <div className="col-span-12 md:col-span-4 flex justify-between md:justify-center items-center">
+             {/* Mobile Menu Button */}
+             <button 
+                className="md:hidden text-zinc-400"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+             >
+                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+             </button>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-white/10 backdrop-blur-xl border-t border-white/10 shadow-2xl">
-          <div className="px-4 py-6 space-y-4">
-            {isAuthenticated ? (
-              <div className="flex flex-col items-start gap-2">
-                <div className="flex items-center gap-3 mb-4">
-                  <button
-                    className="w-12 h-12 rounded-full border-2 border-white/20 focus:outline-none focus:ring-2 focus:ring-teal-400/50 overflow-hidden shadow-lg bg-gradient-to-br from-teal-600/20 to-emerald-600/20 backdrop-blur-sm flex items-center justify-center"
-                    onClick={() => setDropdownOpen((open) => !open)}
-                    aria-label="User menu"
-                  >
-                    <img
-                      src={user?.picture || '/default-avatar.png'}
-                      alt={user?.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  </button>
-                  <div className="text-left">
-                    <p className="text-white font-medium text-lg">{user?.name}</p>
-                    <p className="text-gray-400 text-sm">Welcome back!</p>
-                  </div>
-                </div>
-                {/* Mobile Menu Links */}
-                <div className="w-full space-y-2">
-                  <Link
-                    to="/profile"
-                    className="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 transition-all duration-200 rounded-xl w-full"
-                    onClick={() => { setDropdownOpen(false); setIsMobileMenuOpen(false); }}
-                  >
-                    <UserCircle className="w-5 h-5 text-teal-400" />
-                    <span>Profile</span>
-                  </Link>
-                  <Link
-                    to="/create"
-                    className="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 transition-all duration-200 rounded-xl w-full"
-                    onClick={() => { setDropdownOpen(false); setIsMobileMenuOpen(false); }}
-                  >
-                    <PenTool className="w-5 h-5 text-teal-400" />
-                    <span>Create</span>
-                  </Link>
-                  <Link
-                    to="/dashboard"
-                    className="flex items-center gap-3 px-4 py-3 text-white hover:bg-white/10 transition-all duration-200 rounded-xl w-full"
-                    onClick={() => { setDropdownOpen(false); setIsMobileMenuOpen(false); }}
-                  >
-                    <LayoutDashboard className="w-5 h-5 text-teal-400" />
-                    <span>Dashboard</span>
-                  </Link>
-                  <div className="border-t border-white/10 my-2"></div>
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-3 px-4 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 w-full transition-all duration-200 rounded-xl"
-                  >
-                    <LogOut className="w-5 h-5" />
-                    <span>Logout</span>
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                <Link
-                   to="/login"
-                   className="block w-full text-center px-6 py-3 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-xl font-medium hover:from-teal-600 hover:to-emerald-700 transition-all duration-300 shadow-lg transform hover:scale-105"
-                   onClick={() => setIsMobileMenuOpen(false)}
+             <Link to="/" className="flex items-center gap-2 group">
+                {/* Logo Image */}
+                <img 
+                  src="/nano_writing_logo_1768216125397.png" 
+                  alt="Nano" 
+                  className="h-8 w-auto invert opacity-90 group-hover:opacity-100 transition-opacity" 
+                />
+                <span className="font-display text-2xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">
+                  NANO
+                </span>
+             </Link>
+
+             {/* Mobile Search/User Placeholder (to balance center logo on mobile) */}
+             <div className="w-5 md:hidden"></div>
+          </div>
+
+          {/* RIGHT: Secondary Nav & Actions */}
+          <div className="col-span-4 flex items-center justify-end gap-6 hidden md:flex">
+             {isAuthenticated ? (
+               <>
+                 <Link 
+                   to="/create" 
+                   className={`text-xs font-medium tracking-widest uppercase transition-colors flex items-center gap-2 ${isActive('/create') ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
                  >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="block w-full text-center px-6 py-3 border border-white/20 text-white rounded-xl font-medium hover:bg-white/10 hover:border-white/30 transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Register
-                </Link>
-              </div>
-            )}
+                   Write
+                 </Link>
+                 
+                 <div className="w-px h-3 bg-zinc-800 mx-2"></div>
+                 
+                 <Link to="/profile" className="text-zinc-400 hover:text-white transition-colors" aria-label="Profile">
+                    <User className="w-4 h-4" />
+                 </Link>
+                 
+                 <button onClick={handleLogout} className="text-zinc-400 hover:text-red-400 transition-colors" aria-label="Logout">
+                    <LogOut className="w-4 h-4" />
+                 </button>
+               </>
+             ) : (
+               <>
+                 <Link 
+                   to="/login" 
+                   className="text-xs font-medium tracking-widest uppercase text-white hover:text-zinc-300 transition-colors"
+                 >
+                   Log In
+                 </Link>
+               </>
+             )}
           </div>
+
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-zinc-950 pt-24 px-8 md:hidden">
+           <div className="flex flex-col gap-6 text-center">
+              <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-display text-white">Home</Link>
+              <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-display text-white">Explore</Link>
+              <Link to="/create" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-display text-white">Write</Link>
+              {isAuthenticated ? (
+                <button onClick={handleLogout} className="text-xl font-display text-red-400 mt-4">Sign Out</button>
+              ) : (
+                <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-display text-white mt-4">Log In</Link>
+              )}
+           </div>
         </div>
       )}
-    </nav>
+    </>
   );
 };
 

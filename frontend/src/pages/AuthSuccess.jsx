@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { XCircle } from 'lucide-react';
+import { XCircle, CheckCircle } from 'lucide-react';
 import axios from 'axios';
 
 const AuthSuccess = () => {
@@ -64,25 +64,29 @@ const AuthSuccess = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-black-950 via-black-900 to-black-950 flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-red-900/20 rounded-full mb-6">
-            <XCircle className="w-10 h-10 text-red-400" />
+      <div className="min-h-[calc(100vh-6rem)] flex items-center justify-center p-4">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 text-center max-w-sm w-full">
+          <div className="w-12 h-12 bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-900/30">
+            <XCircle className="w-6 h-6 text-red-500" />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-4">Authentication Failed</h1>
-          <p className="text-black-300 mb-6">{error}</p>
-          <div className="text-sm text-black-400">Redirecting to login page...</div>
+          <h1 className="text-xl font-semibold text-white mb-2">Authentication Failed</h1>
+          <p className="text-zinc-500 text-sm mb-6">{error}</p>
+          <div className="text-xs text-zinc-600 bg-zinc-950 py-2 px-4 rounded-md inline-block border border-zinc-800">
+            Redirecting to login...
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black-950 via-black-900 to-black-950 flex items-center justify-center px-4">
-      <div className="text-center">
-        <LoadingSpinner size="large" className="mb-6" />
-        <h1 className="text-2xl font-bold text-white mb-4">Processing Authentication</h1>
-        <p className="text-black-300">Please wait while we sign you in...</p>
+    <div className="min-h-[calc(100vh-6rem)] flex items-center justify-center p-4">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-12 text-center max-w-sm w-full">
+         <div className="mb-6 flex justify-center">
+            <LoadingSpinner size="large" />
+         </div>
+         <h1 className="text-lg font-medium text-white mb-2">Signing you in</h1>
+         <p className="text-zinc-500 text-sm">Please wait while we verify your credentials...</p>
       </div>
     </div>
   );

@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useBlog } from '../context/BlogContext';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { Save, ArrowLeft, FileText, Type, Feather, Share2 } from 'lucide-react';
+import { Save, ArrowLeft, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const EditBlog = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [shared, setShared] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { updateBlog, fetchBlog } = useBlog();
@@ -22,7 +21,6 @@ const EditBlog = () => {
       if (blog) {
         setTitle(blog.title);
         setContent(blog.content);
-        setShared(blog.shared || false);
       } else {
         toast.error('Blog not found');
         navigate('/dashboard');
@@ -45,7 +43,6 @@ const EditBlog = () => {
     const blog = await updateBlog(id, {
       title: title.trim(),
       content: content.trim(),
-      shared,
     });
     if (blog) {
       toast.success('Blog updated successfully!');
@@ -54,117 +51,86 @@ const EditBlog = () => {
     setIsSubmitting(false);
   };
 
-  const handleBack = () => {
-    navigate('/dashboard');
-  };
-
-  const wordCount = content.trim().split(/\s+/).filter(word => word.length > 0).length;
-  const charCount = content.length;
-  const estimatedReadTime = Math.max(1, Math.ceil(wordCount / 200));
-
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0A0A0A' }}>
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <LoadingSpinner size="large" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: '#0A0A0A' }}>
-      {/* Removed animated background elements for solid background */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 py-20">
-        {/* Hero/Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white via-teal-200 to-emerald-200 bg-clip-text text-transparent mb-4">Edit Your Blog</h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">Update your story and keep your readers engaged. Make your changes below and save!</p>
-          <div className="w-full text-center text-xs text-white/60 italic mt-4">Thoughts staged. Emotions pushed.</div>
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col md:flex-row bg-background">
+       {/* Editor Section */}
+      <div className="flex-1 flex flex-col border-r border-zinc-800">
+        {/* Toolbar */}
+        <div className="h-14 border-b border-zinc-800 flex items-center justify-between px-4 bg-zinc-900/50">
+           <button
+             onClick={() => navigate('/dashboard')}
+             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+           >
+             <ArrowLeft className="w-4 h-4" />
+             <span className="text-sm font-medium">Dashboard</span>
+           </button>
+           
+           <div className="flex items-center gap-2">
+             <span className="text-xs text-zinc-500 mr-2">
+                {title ? 'Unsaved changes' : 'Draft'}
+             </span>
+             <button
+               onClick={handleSubmit}
+               disabled={isSubmitting || !title.trim() || !content.trim()}
+               className="btn-primary py-1.5 px-3 text-sm flex items-center gap-2"
+             >
+               {isSubmitting ? <LoadingSpinner size="small" /> : <Save className="w-3 h-3" />}
+               Update
+             </button>
+           </div>
         </div>
-        {/* Main Content: Two-column layout on desktop, stacked on mobile */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
-          {/* Form Section */}
-          <form onSubmit={handleSubmit} className="md:col-span-2 space-y-8">
-            {/* Title Input */}
-            <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6">
-              <label htmlFor="title" className="text-lg font-bold text-white flex items-center gap-2 mb-2">
-                <Type className="w-5 h-5 text-teal-400" />
-                Blog Title
-              </label>
+
+        {/* Edit Area */}
+        <div className="flex-1 overflow-y-auto p-8 lg:p-12">
+           <div className="max-w-3xl mx-auto space-y-8">
               <input
-                id="title"
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Let your title glimmer..."
-                className="w-full bg-black-900/60 border border-white/10 rounded-xl px-4 py-3 text-xl font-bold text-white focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 transition"
-                maxLength={100}
+                placeholder="Post Title"
+                className="w-full bg-transparent border-none text-4xl md:text-5xl font-display font-bold text-white placeholder-zinc-700 focus:outline-none focus:ring-0 p-0"
               />
-              <div className="mt-2 text-sm text-white/40">
-                <span className={title.length > 80 ? 'text-teal-400' : ''}>
-                  {title.length}/100 characters
-                </span>
-              </div>
-            </div>
-            {/* Content Editor Card */}
-            <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6">
-              <div className="flex items-center gap-2 mb-2">
-                <FileText className="w-5 h-5 text-teal-400" />
-                <label htmlFor="content" className="text-lg font-bold text-white">
-                  Content
-                </label>
-              </div>
-              <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
-                <span className="px-3 py-1 bg-black-900/60 rounded-lg text-teal-400 font-medium text-xs">{wordCount} words</span>
-                <span className="px-3 py-1 bg-black-900/60 rounded-lg text-white/60 font-medium text-xs">{charCount} chars</span>
-                <span className="px-3 py-1 bg-black-900/60 rounded-lg text-white/60 font-medium text-xs">~{estimatedReadTime} min read</span>
-              </div>
               <textarea
-                id="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="Start writing your content here..."
-                className="w-full min-h-[120px] max-h-[220px] text-base leading-relaxed bg-black-900/60 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 transition"
-                rows={6}
+                placeholder="Write your thoughts..."
+                className="w-full h-full min-h-[500px] bg-transparent border-none text-lg text-zinc-300 placeholder-zinc-700 focus:outline-none focus:ring-0 p-0 resize-none leading-relaxed font-mono"
               />
-            </div>
-           
-            {/* Update Button OUTSIDE the card, aligned right */}
-            <div className="w-full flex justify-end mt-4">
-              <button
-                type="submit"
-                disabled={isSubmitting || !title.trim() || !content.trim()}
-                className="bg-teal-500 text-white font-semibold rounded-xl px-8 py-3 text-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg h-fit"
-              >
-                {isSubmitting ? (
-                  <LoadingSpinner size="small" />
-                ) : null}
-                <span>{isSubmitting ? 'Updating Your Verse...' : 'Update Your Verse'}</span>
-              </button>
-            </div>
-          </form>
-          {/* Live Preview Section (right side on desktop, below on mobile) */}
-          <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 lg:sticky lg:top-28 lg:self-start max-h-[340px] overflow-y-auto min-h-[220px] flex flex-col">
-            <h3 className="text-base font-bold text-white mb-2 flex items-center gap-2">
-              <span className="text-xl">📖</span>
-              <span>Live Preview</span>
-            </h3>
-            {title.trim() && (
-              <h2 className="text-xl font-bold text-white mb-2 line-clamp-2">{title}</h2>
-            )}
-            {content.trim() ? (
-              <div className="prose prose-invert max-w-none text-sm">
-                <p className="text-white/80 leading-relaxed whitespace-pre-wrap">
-                  {content.substring(0, 180)}
-                  {content.length > 180 && (
-                    <span className="text-white/40 italic">... (preview truncated)</span>
-                  )}
-                </p>
-              </div>
-            ) : (
-              <div className="flex-1 flex items-center justify-center text-white/40 italic text-sm">Let your muse guide your hand, and watch your words bloom...</div>
-            )}
-          </div>
+           </div>
         </div>
+      </div>
+
+       {/* Preview Section - Hidden on mobile */}
+      <div className="hidden lg:flex w-1/2 bg-zinc-950 flex-col">
+          <div className="h-14 border-b border-zinc-900 flex items-center px-6 bg-zinc-950">
+             <span className="text-xs font-semibold text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+               <Eye className="w-3 h-3" /> Preview
+             </span>
+          </div>
+          <div className="flex-1 overflow-y-auto p-12 bg-zinc-950">
+             <div className="max-w-2xl mx-auto prose prose-invert prose-zinc">
+                {title ? (
+                   <h1>{title}</h1>
+                ) : (
+                   <h1 className="opacity-20">Post Title</h1>
+                )}
+                {content ? (
+                   <div className="whitespace-pre-wrap">{content}</div>
+                ) : (
+                   <p className="opacity-20 whitespace-pre-wrap">
+                      Nothing to preview yet. Start writing on the left to see it appear here.
+                   </p>
+                )}
+             </div>
+          </div>
       </div>
     </div>
   );

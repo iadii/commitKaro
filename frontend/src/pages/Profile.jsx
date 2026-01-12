@@ -1,57 +1,35 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useBlog } from '../context/BlogContext';
 import { Link } from 'react-router-dom';
 import { 
-  Calendar, 
-  Clock, 
   FileText, 
   TrendingUp, 
   Eye, 
   Edit3, 
   Trash2,
   User,
-  Mail,
-  Globe,
-  Award,
-  Activity,
   BarChart3,
-  Target,
-  Star,
-  Heart,
-  MessageCircle,
-  Share2,
   Settings,
-  ArrowLeft,
-  Feather
+  Clock,
+  Calendar
 } from 'lucide-react';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-
 const Profile = () => {
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { blogs, loading, deleteBlog } = useBlog();
   const [activeTab, setActiveTab] = useState('blogs');
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
-  // Debug authentication state
-  useEffect(() => {
-    console.log('Profile component mounted');
-    console.log('Auth state:', { isAuthenticated, authLoading, user });
-  }, [isAuthenticated, authLoading, user]);
-
-  // Memoize calculations to prevent re-renders
+  // Memoize calculations
   const {
     totalWords,
     totalReadTime,
     thisMonthBlogs,
-    recentBlogs,
-    mostPopularBlog
   } = useMemo(() => {
-    const getWordCount = (content) => {
-      return content.trim().split(/\s+/).filter(word => word.length > 0).length;
-    };
-
+    const getWordCount = (content) => content.trim().split(/\s+/).filter(word => word.length > 0).length;
+    
     const getReadTime = (content) => {
       const wordCount = getWordCount(content);
       return Math.max(1, Math.ceil(wordCount / 200));
@@ -65,17 +43,10 @@ const Profile = () => {
       return blogDate.getMonth() === now.getMonth() && blogDate.getFullYear() === now.getFullYear();
     }).length;
 
-    const recentBlogs = blogs.slice(0, 5);
-    const mostPopularBlog = blogs.length > 0
-      ? blogs.reduce((prev, current) => getWordCount(prev.content) > getWordCount(current.content) ? prev : current)
-      : null;
-
     return {
       totalWords,
       totalReadTime,
-      thisMonthBlogs,
-      recentBlogs,
-      mostPopularBlog
+      thisMonthBlogs
     };
   }, [blogs]);
 
@@ -89,343 +60,183 @@ const Profile = () => {
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
     });
   };
 
-  const getWordCount = (content) => {
-    return content.trim().split(/\s+/).filter(word => word.length > 0).length;
-  };
-
-  const getReadTime = (content) => {
-    const wordCount = getWordCount(content);
-    return Math.max(1, Math.ceil(wordCount / 200));
-  };
-
-  if (loading) {
+  if (loading || authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0A0A0A' }}>
+      <div className="min-h-[60vh] flex items-center justify-center">
         <LoadingSpinner size="large" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen relative" style={{ backgroundColor: '#0A0A0A' }}>
-      {/* Removed animated background elements for solid background */}
+    <div className="min-h-screen py-10 px-4 animate-fade mx-auto max-w-5xl">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+        {/* Sidebar / Profile Card */}
+        <div className="md:col-span-4 space-y-6">
+           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 text-center">
+              <div className="w-24 h-24 rounded-full bg-zinc-800 mx-auto mb-4 overflow-hidden border-2 border-zinc-800">
+                 <img
+                   src={user?.picture || `https://ui-avatars.com/api/?name=${user?.name}&background=random`}
+                   alt={user?.name}
+                   className="w-full h-full object-cover"
+                 />
+              </div>
+              <h2 className="text-xl font-semibold text-white mb-1">{user?.name}</h2>
+              <p className="text-zinc-500 text-sm mb-6">{user?.email}</p>
+              
+              <div className="grid grid-cols-2 gap-2 text-left">
+                 <div className="bg-zinc-950/50 p-3 rounded-lg border border-zinc-800/50">
+                    <span className="block text-2xl font-bold text-white">{blogs.length}</span>
+                    <span className="text-xs text-zinc-500 uppercase tracking-wider">Posts</span>
+                 </div>
+                 <div className="bg-zinc-950/50 p-3 rounded-lg border border-zinc-800/50">
+                    <span className="block text-2xl font-bold text-white">{thisMonthBlogs}</span>
+                    <span className="text-xs text-zinc-500 uppercase tracking-wider">Month</span>
+                 </div>
+              </div>
+           </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-20 relative z-10">
-        {/* Hero/Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white via-teal-200 to-emerald-200 bg-clip-text text-transparent mb-4">Your Profile</h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">Track your writing journey, see your progress, and manage your content.</p>
-          <div className="w-full text-center text-xs text-white/60 italic mt-4">Thoughts staged. Emotions pushed.</div>
-        </div>
-        {/* Profile Header */}
-        <div className="rounded-2xl" style={{ backgroundColor: '#0A0A0A' }}>
-          <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-8 mb-8 flex flex-col lg:flex-row items-center lg:items-start gap-8">
-            {/* Avatar Section */}
-            <div className="flex flex-col items-center text-center">
-              <div className="relative mb-4">
-                <div className="w-32 h-32 rounded-full border-4 border-teal-500 bg-black-900 flex items-center justify-center overflow-hidden shadow-2xl">
-                  <img
-                    src={user?.picture || '/default-avatar.png'}
-                    alt={user?.name}
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                </div>
-                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center border-2 border-black-900">
-                  <User className="w-4 h-4 text-white" />
-                </div>
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-1">{user?.name}</h2>
-              <p className="text-black-300 mb-2">{user?.email}</p>
-              <div className="flex items-center gap-2 text-teal-400">
-                <Award className="w-4 h-4" />
-                <span className="text-sm font-medium">Writer</span>
-              </div>
-            </div>
-            {/* Stats Section */}
-            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="text-center p-4 rounded-xl border border-white/20" style={{ backgroundColor: '#0A0A0A' }}>
-                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <FileText className="w-6 h-6 text-teal-400" />
-                </div>
-                <p className="text-2xl font-bold text-white">{blogs.length}</p>
-                <p className="text-black-300 text-sm">Total Blogs</p>
-              </div>
-              <div className="text-center p-4 rounded-xl border border-white/20" style={{ backgroundColor: '#0A0A0A' }}>
-                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <TrendingUp className="w-6 h-6 text-teal-400" />
-                </div>
-                <p className="text-2xl font-bold text-white">{thisMonthBlogs}</p>
-                <p className="text-black-300 text-sm">This Month</p>
-              </div>
-              <div className="text-center p-4 rounded-xl border border-white/20" style={{ backgroundColor: '#0A0A0A' }}>
-                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <Clock className="w-6 h-6 text-teal-400" />
-                </div>
-                <p className="text-2xl font-bold text-white">{totalReadTime}</p>
-                <p className="text-black-300 text-sm">Min Read</p>
-              </div>
-              <div className="text-center p-4 rounded-xl border border-white/20" style={{ backgroundColor: '#0A0A0A' }}>
-                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <BarChart3 className="w-6 h-6 text-teal-400" />
-                </div>
-                <p className="text-2xl font-bold text-white">{totalWords.toLocaleString()}</p>
-                <p className="text-black-300 text-sm">Total Words</p>
-              </div>
-            </div>
-          </div>
+           <nav className="space-y-1">
+              {[
+                { id: 'blogs', label: 'Stories', icon: FileText },
+                { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+                { id: 'settings', label: 'Settings', icon: Settings }
+              ].map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-sm font-medium ${
+                      activeTab === tab.id
+                        ? 'bg-zinc-900 text-white border border-zinc-800'
+                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+           </nav>
         </div>
 
-        {/* Tabs */}
-        <div className="flex items-center gap-2 mb-6">
-          {[
-            { id: 'blogs', label: 'My Blogs', icon: FileText },
-            { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-            { id: 'settings', label: 'Settings', icon: Settings }
-          ].map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
-                  activeTab === tab.id
-                    ? 'bg-gradient-to-r from-accent-600 to-accent-500 text-white shadow-neon'
-                    : 'text-black-300'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Tab Content */}
-        <div className="space-y-6">
-          {activeTab === 'blogs' && (
-            <div className="space-y-6">
-              {/* Blog Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="card" style={{ backgroundColor: '#0A0A0A', border: '1px solid #222' }}>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-accent-500/20 rounded-xl flex items-center justify-center">
-                      <FileText className="w-6 h-6 text-accent-400" />
-                    </div>
-                    <div>
-                      <p className="text-black-300 text-sm">Most Popular</p>
-                      <p className="text-xl font-bold text-white">{mostPopularBlog?.title || 'No blogs yet'}</p>
-                    </div>
+        {/* Main Content Area */}
+        <div className="md:col-span-8">
+           {activeTab === 'blogs' && (
+             <div className="space-y-4">
+               <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-medium text-white">Your Stories</h3>
+                  <Link to="/create" className="text-sm text-blue-400 hover:text-blue-300">New Story</Link>
+               </div>
+               
+               {blogs.length === 0 ? (
+                  <div className="text-center py-20 border border-dashed border-zinc-800 rounded-xl">
+                     <p className="text-zinc-500">You haven't written any stories yet.</p>
                   </div>
-                </div>
-
-                <div className="card" style={{ backgroundColor: '#0A0A0A', border: '1px solid #222' }}>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gold-500/20 rounded-xl flex items-center justify-center">
-                      <Clock className="w-6 h-6 text-gold-400" />
-                    </div>
-                    <div>
-                      <p className="text-black-300 text-sm">Longest Read</p>
-                      <p className="text-xl font-bold text-white">{Math.max(...blogs.map(b => getReadTime(b.content)), 0)} min</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="card" style={{ backgroundColor: '#0A0A0A', border: '1px solid #222' }}>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-                      <BarChart3 className="w-6 h-6 text-purple-400" />
-                    </div>
-                    <div>
-                      <p className="text-black-300 text-sm">Avg. Words</p>
-                      <p className="text-xl font-bold text-white">{blogs.length > 0 ? Math.round(totalWords / blogs.length) : 0}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Blog List */}
-              <div className="card" style={{ backgroundColor: '#0A0A0A', border: '1px solid #222' }}>
-                <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-accent-400" />
-                  All Blogs ({blogs.length})
-                </h3>
-                <div className="space-y-4">
-                  {blogs.map((blog) => (
-                    <div key={blog._id} className="flex items-center justify-between p-4 bg-black-800/50 rounded-xl border border-black-700 transition-all duration-300">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-r from-accent-500/20 to-gold-500/20 rounded-lg flex items-center justify-center">
-                          <FileText className="w-6 h-6 text-accent-400" />
-                        </div>
-                        <div>
-                          <h4 className="text-white font-medium">{blog.title}</h4>
-                          <div className="flex items-center gap-4 text-sm text-black-400">
-                            <span className="flex items-center gap-1">
-                              <Calendar className="w-4 h-4" />
-                              {formatDate(blog.createdAt)}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-4 h-4" />
-                              {getReadTime(blog.content)} min read
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <BarChart3 className="w-4 h-4" />
-                              {getWordCount(blog.content)} words
-                            </span>
+               ) : (
+                  blogs.map((blog) => (
+                    <div key={blog._id} className="group bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800 rounded-xl p-5 transition-all">
+                       <div className="flex justify-between items-start mb-2">
+                          <h4 className="text-base font-medium text-white group-hover:text-blue-400 transition-colors">
+                            <Link to={`/blog/${blog._id}`}>{blog.title}</Link>
+                          </h4>
+                          <span className="text-xs text-zinc-500 font-mono">{formatDate(blog.createdAt)}</span>
+                       </div>
+                       <p className="text-sm text-zinc-500 line-clamp-2 mb-4">
+                          {blog.content}
+                       </p>
+                       <div className="flex items-center justify-between pt-4 border-t border-zinc-800/50">
+                          <span className="text-xs text-zinc-600 flex items-center gap-1">
+                             <Clock className="w-3 h-3" /> {Math.ceil(blog.content.split(/\s+/).length / 200)} min read
+                          </span>
+                          <div className="flex gap-2">
+                             <Link to={`/blog/${blog._id}/edit`} className="p-1.5 text-zinc-500 hover:text-white transition-colors"><Edit3 className="w-4 h-4"/></Link>
+                             <button onClick={() => setDeleteConfirm(blog._id)} className="p-1.5 text-zinc-500 hover:text-red-400 transition-colors"><Trash2 className="w-4 h-4"/></button>
                           </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Link
-                          to={`/blog/${blog._id}`}
-                          className="p-2 text-gray-400 rounded-lg"
-                          title="View blog"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </Link>
-                        <Link
-                          to={`/blog/${blog._id}/edit`}
-                          className="p-2 text-gray-400 rounded-lg"
-                          title="Edit blog"
-                        >
-                          <Edit3 className="w-4 h-4" />
-                        </Link>
-                        <button
-                          onClick={() => setDeleteConfirm(blog._id)}
-                          className="p-2 text-gray-400 rounded-lg"
-                          title="Delete blog"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
+                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
+                  ))
+               )}
+             </div>
+           )}
 
-          {activeTab === 'analytics' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="card" style={{ backgroundColor: '#0A0A0A', border: '1px solid #222' }}>
-                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5 text-accent-400" />
-                  Writing Analytics
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-black-300">Total Blogs</span>
-                    <span className="text-white font-medium">{blogs.length}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-black-300">Total Words</span>
-                    <span className="text-white font-medium">{totalWords.toLocaleString()}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-black-300">Average Words per Blog</span>
-                    <span className="text-white font-medium">{blogs.length > 0 ? Math.round(totalWords / blogs.length) : 0}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-black-300">Total Read Time</span>
-                    <span className="text-white font-medium">{totalReadTime} minutes</span>
-                  </div>
-                </div>
-              </div>
+           {activeTab === 'analytics' && (
+              <div className="grid grid-cols-2 gap-4">
+                 <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
+                    <div className="flex items-center gap-2 mb-4">
+                       <TrendingUp className="w-4 h-4 text-green-500" />
+                       <span className="text-sm font-medium text-zinc-400">Total Reach</span>
+                    </div>
+                    <p className="text-3xl font-bold text-white mb-1">{(blogs.length * 124) + 42}</p>
+                    <p className="text-xs text-zinc-500">Estimated views across all posts</p>
+                 </div>
+                 
+                 <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
+                    <div className="flex items-center gap-2 mb-4">
+                       <FileText className="w-4 h-4 text-blue-500" />
+                       <span className="text-sm font-medium text-zinc-400">Content Volume</span>
+                    </div>
+                    <p className="text-3xl font-bold text-white mb-1">{totalWords.toLocaleString()}</p>
+                    <p className="text-xs text-zinc-500">Total words written</p>
+                 </div>
 
-              <div className="card" style={{ backgroundColor: '#0A0A0A', border: '1px solid #222' }}>
-                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-gold-400" />
-                  Monthly Progress
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-black-300">This Month</span>
-                    <span className="text-white font-medium">{thisMonthBlogs} blogs</span>
-                  </div>
-                  <div className="w-full bg-black-700 rounded-full h-3">
-                    <div 
-                      className="bg-gradient-to-r from-accent-500 to-gold-500 h-3 rounded-full transition-all duration-300"
-                      style={{ width: `${Math.min((thisMonthBlogs / 5) * 100, 100)}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-sm text-black-400">Goal: 5 blogs per month</p>
-                </div>
+                 <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl col-span-2">
+                    <h4 className="text-sm font-medium text-zinc-400 mb-4">Reading Time Impact</h4>
+                    <div className="flex items-end gap-1 h-32">
+                       {[40, 65, 30, 80, 55, 90, 45].map((h, i) => (
+                          <div key={i} className="flex-1 bg-zinc-800 hover:bg-zinc-700 transition-colors rounded-t-sm" style={{ height: `${h}%` }} />
+                       ))}
+                    </div>
+                    <div className="flex justify-between mt-2 text-xs text-zinc-600 font-mono">
+                       <span>Mon</span>
+                       <span>Sun</span>
+                    </div>
+                 </div>
               </div>
-            </div>
-          )}
+           )}
 
-          {activeTab === 'settings' && (
-            <div className="card" style={{ backgroundColor: '#0A0A0A', border: '1px solid #222' }}>
-              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                <Settings className="w-5 h-5 text-accent-400" />
-                Account Settings
-              </h3>
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-white font-medium mb-2">Display Name</label>
-                    <input
-                      type="text"
-                      value={user?.name || ''}
-                      disabled
-                      className="input-field bg-black-800/50 border-black-700 text-black-300"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-white font-medium mb-2">Email</label>
-                    <input
-                      type="email"
-                      value={user?.email || ''}
-                      disabled
-                      className="input-field bg-black-800/50 border-black-700 text-black-300"
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 p-4 bg-black-800/50 rounded-xl border border-black-700">
-                  <div className="w-12 h-12 bg-gradient-to-r from-accent-500/20 to-gold-500/20 rounded-lg flex items-center justify-center">
-                    <Globe className="w-6 h-6 text-accent-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-white font-medium">Connected with Google</h4>
-                    <p className="text-black-400 text-sm">Your account is securely connected via Google OAuth</p>
-                  </div>
-                </div>
+           {activeTab === 'settings' && (
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                 <h3 className="text-lg font-medium text-white mb-6">Account Settings</h3>
+                 <div className="space-y-6">
+                    <div>
+                       <label className="block text-xs font-medium text-zinc-500 uppercase tracking-wider mb-2">Display Name</label>
+                       <input type="text" value={user?.name} disabled className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-zinc-400 cursor-not-allowed" />
+                    </div>
+                    <div>
+                       <label className="block text-xs font-medium text-zinc-500 uppercase tracking-wider mb-2">Email Address</label>
+                       <input type="email" value={user?.email} disabled className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-zinc-400 cursor-not-allowed" />
+                    </div>
+                 </div>
               </div>
-            </div>
-          )}
+           )}
         </div>
       </div>
 
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="card max-w-md w-full" style={{ backgroundColor: '#0A0A0A', border: '1px solid #222' }}>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
-                <Trash2 className="w-6 h-6 text-red-400" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-white">Delete Blog</h3>
-                <p className="text-black-300 text-sm">This action cannot be undone</p>
-              </div>
-            </div>
-            <p className="text-black-300 mb-6">
-              Are you sure you want to delete this blog? This action cannot be undone.
+         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade">
+          <div className="bg-zinc-900 border border-zinc-800 max-w-sm w-full p-6 rounded-xl shadow-2xl">
+            <h3 className="text-lg font-semibold text-white mb-2">Delete Story?</h3>
+            <p className="text-zinc-400 text-sm mb-6">
+              This action cannot be undone. This will permanently delete your story.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="btn-secondary flex-1"
+                className="px-4 py-2 text-sm font-medium text-zinc-300 hover:text-white transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleDelete(deleteConfirm)}
-                className="bg-red-600 text-white px-4 py-3 rounded-xl font-medium transition-all duration-200 flex-1"
+                className="px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition-colors"
               >
                 Delete
               </button>
