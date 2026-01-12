@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 const Privacy = () => {
   return (
     <div className="min-h-screen bg-zinc-950 relative flex flex-col">
-      {/* Background Image & Overlay */}
        <div className="fixed inset-0 z-0 pointer-events-none">
           <img 
             src="/editorial_hero_image_1768204267018.png" 

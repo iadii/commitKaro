@@ -9,22 +9,18 @@ const Home = () => {
   return (
     <div className="min-h-screen flex flex-col bg-zinc-950 relative">
       
-      {/* Full Screen Hero with Background Image */}
       <section className="relative min-h-screen flex items-center justify-center lg:justify-start px-8 lg:px-24 overflow-hidden">
         
-        {/* Background Image & Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
             src="/editorial_hero_image_1768204267018.png" 
             alt="Editorial Background" 
             className="w-full h-full object-cover opacity-50 mix-blend-luminosity"
           />
-          {/* Gradient Overlay for Text Readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/90 via-zinc-950/40 to-transparent"></div>
           <div className="absolute inset-0 bg-black/20"></div>
         </div>
         
-        {/* Content */}
         <div className="relative z-10 max-w-2xl pt-20">
           <p className="text-zinc-400 text-xs sm:text-sm uppercase tracking-[0.3em] mb-6 sm:mb-8 font-medium pl-1">
             A writing sanctuary
@@ -98,10 +94,8 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Divider Line */}
           <div className="w-full h-px md:w-px md:h-auto bg-zinc-900"></div>
 
-          {/* CTA Column */}
           <div className="flex-1 py-16 md:py-24 px-8 md:pl-12 flex flex-col justify-center items-center md:items-start text-center md:text-left">
             <h2 className="text-3xl md:text-5xl font-serif italic text-white mb-6 tracking-tight">
               Ready to write?

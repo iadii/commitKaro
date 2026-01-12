@@ -16,9 +16,22 @@ import About from './pages/About';
 import Privacy from './pages/Privacy';
 import ScrollToTop from './components/ScrollToTop';
 
+import { useAuth } from './context/AuthContext';
+import LoadingSpinner from './components/LoadingSpinner';
+
 const MainLayout = () => {
   const location = useLocation();
+  const { loading } = useAuth();
   const isFullPageRoute = ['/', '/login', '/dashboard', '/create', '/profile'].includes(location.pathname) || location.pathname.startsWith('/blog/');
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center gap-4">
+        <LoadingSpinner size="large" />
+        <p className="text-zinc-500 font-serif italic text-sm animate-pulse">Synchronizing...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative font-sans antialiased text-zinc-100 selection:bg-white selection:text-black">
