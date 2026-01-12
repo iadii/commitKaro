@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useBlog } from '../context/BlogContext';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { Save, ArrowLeft, Eye } from 'lucide-react';
+import { FloppyDisk, ArrowLeft, Eye } from '@phosphor-icons/react';
 import toast from 'react-hot-toast';
 
 const EditBlog = () => {
@@ -82,7 +82,7 @@ const EditBlog = () => {
                disabled={isSubmitting || !title.trim() || !content.trim()}
                className="btn-primary py-1.5 px-3 text-sm flex items-center gap-2"
              >
-               {isSubmitting ? <LoadingSpinner size="small" /> : <Save className="w-3 h-3" />}
+               {isSubmitting ? <LoadingSpinner size="small" /> : <FloppyDisk weight="bold" size={12} />}
                Update
              </button>
            </div>

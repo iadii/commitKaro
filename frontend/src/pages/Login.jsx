@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Terminal } from 'lucide-react';
+import { Terminal } from '@phosphor-icons/react';
 import { BACKEND_URL } from '../config/config';
 
 const Login = () => {

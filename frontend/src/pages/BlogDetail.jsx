@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useBlog } from '../context/BlogContext';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { ArrowLeft, Clock, Trash2, Edit2, Share2, Link as LinkIcon, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Clock, Trash, PencilLine, ShareNetwork, Link as LinkIcon, WarningCircle } from '@phosphor-icons/react';
 import toast from 'react-hot-toast';
 
 const BlogDetail = () => {
@@ -120,7 +120,7 @@ const BlogDetail = () => {
       <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-background">
         <div className="text-center max-w-lg w-full">
           <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-zinc-800">
-            <AlertCircle className="w-8 h-8 text-zinc-500" />
+            <WarningCircle weight="regular" size={32} className="text-zinc-500" />
           </div>
           <h1 className="text-2xl font-bold text-white mb-4">Story Not Found</h1>
           <p className="text-zinc-400 mb-8">The story you're looking for might have been removed or is not available.</p>
@@ -141,7 +141,7 @@ const BlogDetail = () => {
             to="/dashboard"
             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm font-medium group"
           >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft weight="bold" size={16} className="group-hover:-translate-x-1 transition-transform" />
             Back to Dashboard
           </Link>
           
@@ -157,21 +157,21 @@ const BlogDetail = () => {
                   }`}
                   title={isShared ? 'Shared (Click to Unshare)' : 'Private (Click to Share)'}
                 >
-                  <Share2 className="w-4 h-4" />
+                  <ShareNetwork weight="regular" size={16} />
                 </button>
                 <Link
                   to={`/blog/${id}/edit`}
                   className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white transition-colors"
                   title="Edit"
                 >
-                  <Edit2 className="w-4 h-4" />
+                  <PencilLine weight="regular" size={16} />
                 </Link>
                 <button
                   onClick={() => setDeleteConfirm(true)}
                   className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-red-900/50 hover:bg-red-950/20 text-zinc-400 hover:text-red-400 transition-colors"
                   title="Delete"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash weight="regular" size={16} />
                 </button>
               </>
             )}
@@ -181,7 +181,7 @@ const BlogDetail = () => {
                 className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white transition-colors" 
                 title="Copy Link"
               >
-                <LinkIcon className="w-4 h-4" />
+                <LinkIcon weight="regular" size={16} />
               </button>
             )}
           </div>
@@ -194,7 +194,7 @@ const BlogDetail = () => {
                  <span>{formatDate(blog.createdAt)}</span>
                  <span>•</span>
                  <span className="flex items-center gap-1">
-                   <Clock className="w-3 h-3" />
+                   <Clock weight="regular" size={12} />
                    {calculateReadTime(blog.content)} min read
                  </span>
              </div>

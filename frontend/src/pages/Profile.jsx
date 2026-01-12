@@ -4,16 +4,16 @@ import { useBlog } from '../context/BlogContext';
 import { Link } from 'react-router-dom';
 import { 
   FileText, 
-  TrendingUp, 
+  TrendUp, 
   Eye, 
-  Edit3, 
-  Trash2,
+  PencilLine, 
+  Trash,
   User,
-  BarChart3,
-  Settings,
+  ChartBar,
+  Gear,
   Clock,
   Calendar
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const Profile = () => {
@@ -118,7 +118,7 @@ const Profile = () => {
                         : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/50'
                     }`}
                   >
-                    <Icon className="w-4 h-4" />
+                    <Icon weight="regular" size={16} />
                     {tab.label}
                   </button>
                 );
@@ -153,11 +153,11 @@ const Profile = () => {
                        </p>
                        <div className="flex items-center justify-between pt-4 border-t border-zinc-800/50">
                           <span className="text-xs text-zinc-600 flex items-center gap-1">
-                             <Clock className="w-3 h-3" /> {Math.ceil(blog.content.split(/\s+/).length / 200)} min read
+                             <Clock weight="regular" size={12} /> {Math.ceil(blog.content.split(/\s+/).length / 200)} min read
                           </span>
                           <div className="flex gap-2">
-                             <Link to={`/blog/${blog._id}/edit`} className="p-1.5 text-zinc-500 hover:text-white transition-colors"><Edit3 className="w-4 h-4"/></Link>
-                             <button onClick={() => setDeleteConfirm(blog._id)} className="p-1.5 text-zinc-500 hover:text-red-400 transition-colors"><Trash2 className="w-4 h-4"/></button>
+                             <Link to={`/blog/${blog._id}/edit`} className="p-1.5 text-zinc-500 hover:text-white transition-colors"><PencilLine weight="regular" size={16}/></Link>
+                             <button onClick={() => setDeleteConfirm(blog._id)} className="p-1.5 text-zinc-500 hover:text-red-400 transition-colors"><Trash weight="regular" size={16}/></button>
                           </div>
                        </div>
                     </div>
@@ -170,7 +170,7 @@ const Profile = () => {
               <div className="grid grid-cols-2 gap-4">
                  <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
                     <div className="flex items-center gap-2 mb-4">
-                       <TrendingUp className="w-4 h-4 text-green-500" />
+                       <TrendUp weight="fill" size={16} className="text-green-500" />
                        <span className="text-sm font-medium text-zinc-400">Total Reach</span>
                     </div>
                     <p className="text-3xl font-bold text-white mb-1">{(blogs.length * 124) + 42}</p>
@@ -179,7 +179,7 @@ const Profile = () => {
                  
                  <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
                     <div className="flex items-center gap-2 mb-4">
-                       <FileText className="w-4 h-4 text-blue-500" />
+                       <FileText weight="fill" size={16} className="text-blue-500" />
                        <span className="text-sm font-medium text-zinc-400">Content Volume</span>
                     </div>
                     <p className="text-3xl font-bold text-white mb-1">{totalWords.toLocaleString()}</p>

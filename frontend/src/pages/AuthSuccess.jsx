@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { XCircle, CheckCircle } from 'lucide-react';
+import { XCircle, CheckCircle } from '@phosphor-icons/react';
 import axios from 'axios';
 
 const AuthSuccess = () => {
