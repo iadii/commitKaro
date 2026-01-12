@@ -58,7 +58,7 @@ const Home = () => {
                   <ArrowRight weight="bold" size={18} />
                 </Link>
                 <Link
-                  to="/dashboard"
+                  to={isAuthenticated ? "/dashboard" : "/login"}
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white hover:text-zinc-300 transition-colors backdrop-blur-sm bg-white/5 rounded-full border border-white/10"
                 >
                   Explore Stories
@@ -72,44 +72,52 @@ const Home = () => {
         
       </section>
 
-      {/* Stats Section */}
-      <section className="py-24 px-8 border-t border-white/5 bg-zinc-950 relative z-10">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 sm:gap-8">
-          <div className="text-center group cursor-default">
-            <p className="text-4xl lg:text-6xl font-display font-medium text-zinc-800 group-hover:text-white transition-colors duration-500 mb-2">∞</p>
-            <p className="text-[10px] sm:text-xs text-zinc-600 uppercase tracking-widest">Stories Written</p>
-          </div>
-          <div className="text-center group cursor-default">
-            <p className="text-4xl lg:text-6xl font-display font-medium text-zinc-800 group-hover:text-white transition-colors duration-500 mb-2">0</p>
-            <p className="text-[10px] sm:text-xs text-zinc-600 uppercase tracking-widest">Distractions</p>
-          </div>
-          <div className="text-center group cursor-default">
-            <p className="text-4xl lg:text-6xl font-display font-medium text-zinc-800 group-hover:text-white transition-colors duration-500 mb-2">1</p>
-            <p className="text-[10px] sm:text-xs text-zinc-600 uppercase tracking-widest">Focus</p>
-          </div>
-          <div className="text-center group cursor-default">
-            <p className="text-4xl lg:text-6xl font-display font-medium text-zinc-800 group-hover:text-white transition-colors duration-500 mb-2">∞</p>
-            <p className="text-[10px] sm:text-xs text-zinc-600 uppercase tracking-widest">Possibilities</p>
-          </div>
-        </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-40 px-8 border-t border-white/5 bg-zinc-950 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-7xl font-display font-medium text-white mb-8 tracking-tight">
-            Ready to write?
-          </h2>
-          <p className="text-zinc-500 text-lg sm:text-xl mb-12 max-w-lg mx-auto leading-relaxed">
-            Join writers who've chosen simplicity over complexity.
-          </p>
-          <Link
-            to="/login"
-            className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-white text-zinc-900 rounded-full font-medium hover:bg-zinc-200 transition-colors shadow-2xl shadow-white/10 text-lg"
-          >
-            Get Started — It's Free
-            <ArrowRight weight="bold" size={20} />
-          </Link>
+      <section className="border-t border-zinc-900 bg-zinc-950 relative z-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row">
+          
+          {/* Stats Column */}
+          <div className="flex-1 py-16 md:py-24 px-8 md:pr-12 flex flex-col justify-center">
+            <div className="grid grid-cols-2 gap-12 sm:gap-16 max-w-lg mx-auto md:mx-0">
+              <div className="text-center md:text-left group cursor-default">
+                <p className="text-3xl lg:text-5xl font-display font-medium text-zinc-800 group-hover:text-white transition-colors duration-500 mb-2">∞</p>
+                <p className="text-[10px] text-zinc-600 uppercase tracking-widest font-medium">Stories Written</p>
+              </div>
+              <div className="text-center md:text-left group cursor-default">
+                <p className="text-3xl lg:text-5xl font-display font-medium text-zinc-800 group-hover:text-white transition-colors duration-500 mb-2">0</p>
+                <p className="text-[10px] text-zinc-600 uppercase tracking-widest font-medium">Distractions</p>
+              </div>
+              <div className="text-center md:text-left group cursor-default">
+                <p className="text-3xl lg:text-5xl font-display font-medium text-zinc-800 group-hover:text-white transition-colors duration-500 mb-2">1</p>
+                <p className="text-[10px] text-zinc-600 uppercase tracking-widest font-medium">Focus</p>
+              </div>
+              <div className="text-center md:text-left group cursor-default">
+                <p className="text-3xl lg:text-5xl font-display font-medium text-zinc-800 group-hover:text-white transition-colors duration-500 mb-2">∞</p>
+                <p className="text-[10px] text-zinc-600 uppercase tracking-widest font-medium">Possibilities</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Divider Line */}
+          <div className="w-full h-px md:w-px md:h-auto bg-zinc-900"></div>
+
+          {/* CTA Column */}
+          <div className="flex-1 py-16 md:py-24 px-8 md:pl-12 flex flex-col justify-center items-center md:items-start text-center md:text-left">
+            <h2 className="text-3xl md:text-5xl font-serif italic text-white mb-6 tracking-tight">
+              Ready to write?
+            </h2>
+            <p className="text-zinc-500 text-sm mb-10 uppercase tracking-widest font-medium">
+              Simplicity over complexity.
+            </p>
+            <Link
+              to="/login"
+              className="group inline-flex items-center gap-2 text-white border-b border-white pb-1 hover:text-zinc-300 hover:border-zinc-500 transition-all font-display text-lg"
+            >
+              Start Writing
+              <ArrowRight weight="regular" size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
         </div>
       </section>
 

@@ -13,7 +13,7 @@ const Footer = () => (
         <div className="flex items-center gap-8 text-sm text-zinc-600 font-medium tracking-wide uppercase">
            <Link to="/about" className="hover:text-zinc-300 transition-colors">Manifesto</Link>
            <Link to="/privacy" className="hover:text-zinc-300 transition-colors">Privacy</Link>
-           <a href="https://twitter.com/iadii" target="_blank" rel="noreferrer" className="hover:text-zinc-300 transition-colors">X</a>
+           <a href="https://twitter.com/iadii_" target="_blank" rel="noreferrer" className="hover:text-zinc-300 transition-colors">X</a>
            <a href="https://github.com/iadii" target="_blank" rel="noreferrer" className="hover:text-zinc-300 transition-colors">Hub</a>
         </div>
 

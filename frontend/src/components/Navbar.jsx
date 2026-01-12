@@ -34,7 +34,7 @@ const Navbar = () => {
             Home
           </Link>
           <Link 
-            to="/dashboard" 
+            to={isAuthenticated ? "/dashboard" : "/login"}
             className={`px-4 py-2 text-xs font-medium tracking-widest uppercase transition-colors rounded-full ${isActive('/dashboard') ? 'text-white bg-white/10' : 'text-zinc-500 hover:text-white'}`}
           >
             Explore
