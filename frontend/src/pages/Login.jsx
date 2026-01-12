@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Terminal } from '@phosphor-icons/react';
+import { User, ArrowRight } from '@phosphor-icons/react';
 import { BACKEND_URL } from '../config/config';
+import Footer from '../components/Footer';
 
 const Login = () => {
   const { isAuthenticated, loading } = useAuth();
@@ -22,23 +23,39 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-6rem)] flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
-        {/* Login Card */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl">
-          <div className="mb-8 text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-white mb-6">
-              <Terminal className="w-6 h-6 text-black" />
-            </div>
-            <h1 className="text-2xl font-semibold text-white mb-2">Welcome Back</h1>
-            <p className="text-zinc-400 text-sm">Sign in to access your dashboard</p>
+    <div className="min-h-screen flex flex-col bg-zinc-950 relative">
+        
+       {/* Background Image & Overlay */}
+       <div className="absolute inset-0 z-0">
+          <img 
+            src="/editorial_hero_image_1768204267018.png" 
+            alt="Editorial Background" 
+            className="w-full h-full object-cover opacity-30 mix-blend-luminosity blur-sm"
+          />
+          <div className="absolute inset-0 bg-zinc-950/60"></div>
+       </div>
+
+      <div className="relative z-10 flex-1 flex items-center justify-center p-4">
+        {/* Glassmorphic Login Card */}
+        <div className="w-full max-w-sm bg-zinc-900/40 backdrop-blur-xl border border-white/10 rounded-2xl p-8 sm:p-10 shadow-2xl shadow-black/50">
+          
+          <div className="mb-10 text-center">
+             <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/5 border border-white/10 mb-6 text-white text-opacity-80">
+               <User weight="light" size={28} />
+             </div>
+             
+             <h1 className="text-3xl font-display font-medium text-white mb-3">Welcome Back</h1>
+             <p className="text-zinc-400 text-sm leading-relaxed">
+               Enter your sanctuary. <br/> Continue your writing journey.
+             </p>
           </div>
 
           <button
             onClick={handleGoogleLogin}
-            className="w-full bg-white hover:bg-zinc-200 text-black font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-3"
+            className="group w-full bg-white hover:bg-zinc-200 text-zinc-900 font-medium py-3.5 px-4 rounded-full transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
           >
-            <svg className="w-5 h-5" viewBox="0 0 24 24">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+            <svg className="w-5 h-5 relative z-10" viewBox="0 0 24 24">
               <path
                 fill="currentColor"
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -56,15 +73,21 @@ const Login = () => {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            <span>Continue with Google</span>
+            <span className="relative z-10">Continue with Google</span>
           </button>
 
-          <div className="mt-6 pt-6 border-t border-zinc-800 text-center">
-             <p className="text-zinc-500 text-xs">
-                By continuing, you agree to our <Link to="/terms" className="underline hover:text-zinc-300">Terms</Link> and <Link to="/privacy" className="underline hover:text-zinc-300">Privacy Policy</Link>.
-             </p>
+          <div className="mt-8 text-center">
+             <Link to="/" className="text-xs text-zinc-500 hover:text-white transition-colors flex items-center justify-center gap-1 group">
+                <ArrowRight className="w-3 h-3 rotate-180 group-hover:-translate-x-1 transition-transform" />
+                Back to Home
+             </Link>
           </div>
+
         </div>
+      </div>
+      
+      <div className="relative z-10">
+         <Footer />
       </div>
     </div>
   );
